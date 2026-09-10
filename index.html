@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bebsi — мессенджер через тернии к звёздам</title>
+<meta name="description" content="Bebsi — быстрый и красивый мессенджер: чаты, группы, истории, голосовые, кружки, реакции, опросы и код-замок.">
+<style>
+:root{
+  --bg:#12121a; --card:#1e1e28; --stroke:#2a2a36;
+  --text:#f2f2f7; --muted:#8a8a93; --accent:#6c5ce7; --accent2:#8b7cf7;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:"Segoe UI","SF Pro Text","Helvetica Neue",Arial,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:0;z-index:10;background:rgba(18,18,26,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--stroke)}
+nav{display:flex;align-items:center;gap:24px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
+.logo .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+nav .links{margin-left:auto;display:flex;gap:20px;color:var(--muted);font-size:14px}
+nav .links a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:10px;border-radius:14px;padding:12px 22px;font-weight:600;font-size:15px;transition:.2s;border:none;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 8px 24px rgba(108,92,231,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(108,92,231,.5)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--stroke)}
+.btn-ghost:hover{color:var(--text);border-color:var(--accent)}
+.hero{position:relative;padding:110px 0 90px;text-align:center;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.35;animation:float 9s ease-in-out infinite}
+.blob.b1{width:420px;height:420px;background:var(--accent);top:-120px;left:-80px}
+.blob.b2{width:360px;height:360px;background:#00cec9;bottom:-140px;right:-60px;animation-delay:-4s}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,20px)}}
+.hero h1{font-size:clamp(38px,6vw,64px);font-weight:800;line-height:1.1}
+.hero h1 span{background:linear-gradient(135deg,var(--accent2),#00cec9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:18px;margin:18px auto 34px;max-width:560px}
+.hero .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--stroke);border-radius:999px;padding:6px 14px;font-size:12px;color:var(--muted);margin-bottom:22px}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:#2ecc71}
+section{padding:80px 0}
+h2{font-size:32px;font-weight:800;text-align:center;margin-bottom:14px}
+.sub{text-align:center;color:var(--muted);margin-bottom:48px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--stroke);border-radius:20px;padding:26px;transition:.25s}
+.card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.card .ico{font-size:30px;margin-bottom:14px}
+.card h3{font-size:17px;margin-bottom:8px}
+.card p{color:var(--muted);font-size:14px;line-height:1.55}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:34px}
+.shot{position:relative}
+.shot::before{content:"";position:absolute;inset:-14px;border-radius:26px;
+  background:radial-gradient(60% 60% at 50% 40%, rgba(108,92,231,.28), transparent 70%);
+  filter:blur(10px);z-index:0;transition:.3s}
+.shot:hover::before{background:radial-gradient(60% 60% at 50% 40%, rgba(108,92,231,.45), transparent 70%)}
+.frame{position:relative;z-index:1;border-radius:18px;overflow:hidden;background:#16161e;
+  border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 60px rgba(0,0,0,.5);transition:.3s}
+.shot:hover .frame{transform:translateY(-6px)}
+.frame .bar{height:36px;display:flex;align-items:center;gap:7px;padding:0 14px;background:rgba(255,255,255,.05)}
+.frame .bar i{width:11px;height:11px;border-radius:50%}
+.frame .bar i:nth-child(1){background:#ff5f57}
+.frame .bar i:nth-child(2){background:#febc2e}
+.frame .bar i:nth-child(3){background:#28c840}
+.frame .bar span{margin-left:8px;font-size:12px;color:var(--muted)}
+.frame img{display:block;width:100%}
+.shot .cap{text-align:center;color:var(--muted);font-size:13px;margin-top:16px}
+.dl{background:linear-gradient(135deg,rgba(108,92,231,.16),rgba(0,206,201,.10));border:1px solid var(--stroke);border-radius:28px;padding:56px 30px;text-align:center}
+.dl .meta{color:var(--muted);font-size:13px;margin-top:16px}
+.road{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.ritem{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--stroke);border-radius:16px;padding:18px 20px;transition:.25s}
+.ritem:hover{transform:translateY(-3px);border-color:var(--accent)}
+.ritem .st{font-size:11px;font-weight:700;border-radius:999px;padding:4px 10px;white-space:nowrap;margin-top:2px}
+.st.done{background:rgba(46,204,113,.15);color:#2ecc71}
+.st.work{background:rgba(241,196,15,.15);color:#f1c40f}
+.st.plan{background:rgba(138,138,147,.15);color:var(--muted)}
+.ritem b{font-size:15px}
+.ritem .d{color:var(--muted);font-size:13.5px;line-height:1.5}
+footer{border-top:1px solid var(--stroke);padding:34px 0;color:var(--muted);font-size:13px;text-align:center}
+.reveal{opacity:0;transform:translateY(24px);transition:.6s ease}
+.reveal.on{opacity:1;transform:none}
+@media(max-width:640px){nav .links{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#"><span class="mark">B</span>Bebsi</a>
+      <div class="links">
+        <a href="#features">Возможности</a>
+        <a href="#screens">Скриншоты</a>
+        <a href="#download">Скачать</a>
+        <a href="#roadmap">Планы</a>
+      </div>
+      <a class="btn btn-primary" href="#download" style="padding:9px 16px;font-size:13px">Скачать</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="wrap">
+    <div class="badge"><span class="dot"></span>версия 7.2 · Windows 10/11</div>
+    <h1>Bebsi — мессенджер<br><span>через тернии к звёздам</span></h1>
+    <p>Чаты, группы, истории, голосовые и кружки, реакции, опросы, код-замок и фирменные анимации. Всё твоё — только твоё.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="files/BebsiSetup.exe">⬇ Скачать лаунчер</a>
+      <a class="btn btn-ghost" href="#features">Что внутри</a>
+    </div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <h2>Возможности</h2>
+    <p class="sub">Всё, что нужно для общения — и немного магии сверху</p>
+    <div class="grid">
+      <div class="card reveal"><div class="ico">💬</div><h3>Чаты и группы</h3><p>Личные переписки, группы с владельцем, ответы, правки, пересылка и удаление сообщений.</p></div>
+      <div class="card reveal"><div class="ico">🎤</div><h3>Голосовые и кружки</h3><p>Запись голоса и видеокружков с расшифровкой речи прямо в мессенджере.</p></div>
+      <div class="card reveal"><div class="ico">📸</div><h3>Истории</h3><p>Публикуй фото-истории с подписью и смотри чужие — как в больших мессенджерах.</p></div>
+      <div class="card reveal"><div class="ico">❤️</div><h3>Реакции и опросы</h3><p>Ставь реакции двойным кликом и создавай опросы с живым подсчётом голосов.</p></div>
+      <div class="card reveal"><div class="ico">🔒</div><h3>Код-замок</h3><p>Пароль на вход в чаты и мгновенная блокировка замочком — приватность прежде всего.</p></div>
+      <div class="card reveal"><div class="ico">📌</div><h3>Пины и избранное</h3><p>Закрепляй важные чаты и храни заметки с вложениями в личном избранном.</p></div>
+      <div class="card reveal"><div class="ico">🎨</div><h3>Темы и обои</h3><p>Тёмная и светлая темы, семь анимированных обоев и плавные переходы экранов.</p></div>
+      <div class="card reveal"><div class="ico">⚡</div><h3>Скорость</h3><p>Лёгкий клиент на PySide6: мгновенное открытие чатов и умные лимиты кэша.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="screens">
+  <div class="wrap">
+    <h2>Как выглядит Bebsi</h2>
+    <p class="sub">Два кадра — и всё понятно</p>
+    <div class="shots">
+      <div class="shot reveal">
+        <div class="frame">
+          <div class="bar"><i></i><i></i><i></i><span>Bebsi — главный экран</span></div>
+          <img src="screens/main.png" alt="Главный экран Bebsi" loading="lazy">
+        </div>
+        <div class="cap">Сайдбар с чатами, закрепами и замочком</div>
+      </div>
+      <div class="shot reveal">
+        <div class="frame">
+          <div class="bar"><i></i><i></i><i></i><span>Bebsi — код-замок</span></div>
+          <img src="screens/lock.png" alt="Экран блокировки Bebsi" loading="lazy">
+        </div>
+        <div class="cap">Экран блокировки: без кода чаты не открыть</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <div class="dl reveal">
+      <h2>Скачать Bebsi</h2>
+      <p class="sub" style="margin-bottom:28px">Один файл — и мессенджер у тебя</p>
+      <a class="btn btn-primary" href="files/BebsiSetup.exe" style="font-size:17px;padding:16px 34px">⬇ Bebsi для Windows</a>
+      <div class="meta">Windows 10/11 · версия 7.2 · бесплатно и без рекламы</div>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <h2>Дорожная карта</h2>
+    <p class="sub">Куда растёт Bebsi</p>
+    <div class="road">
+      <div class="ritem reveal"><span class="st done">готово</span><div><b>Ядро мессенджера</b><br><span class="d">чаты, группы, истории, звонки, код-замок, пины, черновики, экспорт, горячие клавиши, перф-пакет</span></div></div>
+      <div class="ritem reveal"><span class="st done">готово</span><div><b>Сайт и скриншоты</b><br><span class="d">лендинг с возможностями, живыми кадрами интерфейса и кнопкой скачивания</span></div></div>
+      <div class="ritem reveal"><span class="st work">в работе</span><div><b>Лаунчер и авто-обновления</b><br><span class="d">сборка exe через PyInstaller, установка одной кнопкой, обновления по воздуху</span></div></div>
+      <div class="ritem reveal"><span class="st plan">план</span><div><b>Публичный сервер</b><br><span class="d">VPS + домен + TLS, рейт-лимиты, модерация, база сообщений и медиа-файлы</span></div></div>
+      <div class="ritem reveal"><span class="st plan">план</span><div><b>Большие фичи</b><br><span class="d">стикеры, каналы, мульти-сессии, сквозное шифрование, переводчик сообщений</span></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© <span id="y"></span> Bebsi · сделано с 🤍 и терниями · <a href="#" style="color:var(--accent2)">наверх ↑</a></div>
+</footer>
+
+<script>
+document.getElementById('y').textContent = new Date().getFullYear();
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } }), {threshold:.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "version": "1.0.1",
+  "client_hash": "fbeea40e3c4b85d3f509fa697da113be982d6f881831c7506c4df0ade3102d55",
+  "client_url": "https://raw.githubusercontent.com/Bebsifoterned/Bebsi-site/main/client.py",
+  "changelog": "Исправлено сохранение аккаунта в трее и улучшен автозапуск"
+}

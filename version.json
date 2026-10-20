@@ -1,6 +1,5 @@
 {
-  "version": "1.0.1",
-  "client_hash": "fbeea40e3c4b85d3f509fa697da113be982d6f881831c7506c4df0ade3102d55",
-  "client_url": "https://raw.githubusercontent.com/Bebsifoterned/Bebsi-site/main/client.py",
-  "changelog": "Исправлено сохранение аккаунта в трее и улучшен автозапуск"
+  "version": "7.3",
+  "client_hash": "3a90a144ca704658a5e1e9a5e639be125298ff04bec11a11364c7c931c63257c",
+  "changelog": "🚀 Полный онлайн! Мессенджер теперь подключается к публичному серверу в облаке."
 }
